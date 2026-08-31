@@ -16,17 +16,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-      
-        RepositoryProvider(create: (context)=>WeatherRespository(WeatherDataProvider()),
+        RepositoryProvider(
+            create: (context) => WeatherRespository(WeatherDataProvider())),
       ],
-      child: MultiBlocProvider(providers: [
-       BlocProvider(create: (context)=>WeatherBloc(context.read<WeatherRespository>())),
-      ],child:  MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark(useMaterial3: true),
-        home: const WeatherScreen(),
-      ),,),
-     
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (context) =>
+                  WeatherBloc(context.read<WeatherRespository>())),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.dark(useMaterial3: true),
+          home: const WeatherScreen(),
+        ),
+      ),
     );
   }
 }

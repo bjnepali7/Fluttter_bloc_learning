@@ -45,30 +45,25 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ),
         ],
       ),
-      body: BlocBuilder(
+      body: BlocBuilder<WeatherBloc, WeatherState>(
         // future: weather,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+        builder: (context, state) {
+          if (state is WeatherError) {
+            return Center(child: Text(state.error));
+          }
+          if (state is! Weathersucess) {
+            return Center(
               child: CircularProgressIndicator.adaptive(),
             );
           }
 
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
-          }
+          final data = state.weatherModel;
 
-          final data = snapshot.data!;
-
-          final currentWeatherData = data['list'][0];
-
-          final currentTemp = currentWeatherData['main']['temp'];
-          final currentSky = currentWeatherData['weather'][0]['main'];
-          final currentPressure = currentWeatherData['main']['pressure'];
-          final currentWindSpeed = currentWeatherData['wind']['speed'];
-          final currentHumidity = currentWeatherData['main']['humidity'];
+          final currentTemp = data.temperature;
+          final currentSky = data.sky;
+          final currentPressure = data.pressure;
+          final currentWindSpeed =data.windSpeed;
+          final currentHumidity =data.humidity;
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -131,28 +126,28 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                SizedBox(
-                  height: 120,
-                  child: ListView.builder(
-                    itemCount: 5,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      final hourlyForecast = data['list'][index + 1];
-                      final hourlySky =
-                          data['list'][index + 1]['weather'][0]['main'];
-                      final hourlyTemp =
-                          hourlyForecast['main']['temp'].toString();
-                      final time = DateTime.parse(hourlyForecast['dt_txt']);
-                      return HourlyForecastItem(
-                        time: DateFormat.j().format(time),
-                        temperature: hourlyTemp,
-                        icon: hourlySky == 'Clouds' || hourlySky == 'Rain'
-                            ? Icons.cloud
-                            : Icons.sunny,
-                      );
-                    },
-                  ),
-                ),
+                // SizedBox(
+                //   height: 120,
+                //   child: ListView.builder(
+                //     itemCount: 5,
+                //     scrollDirection: Axis.horizontal,
+                //     itemBuilder: (context, index) {
+                //       final hourlyForecast = data['list'][index + 1];
+                //       final hourlySky =
+                //           data['list'][index + 1]['weather'][0]['main'];
+                //       final hourlyTemp =
+                //           hourlyForecast['main']['temp'].toString();
+                //       final time = DateTime.parse(hourlyForecast['dt_txt']);
+                //       return HourlyForecastItem(
+                //         time: DateFormat.j().format(time),
+                //         temperature: hourlyTemp,
+                //         icon: hourlySky == 'Clouds' || hourlySky == 'Rain'
+                //             ? Icons.cloud
+                //             : Icons.sunny,
+                //       );
+                //     },
+                //   ),
+                // ),
 
                 const SizedBox(height: 20),
                 const Text(
