@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:weather_app/data/data_provider/weather_data_provider.dart';
 import 'package:weather_app/model/weather_model.dart';
 
@@ -18,7 +17,7 @@ class WeatherRespository {
         throw 'An unexpected error occurred';
       }
 
-      return WeatherModel.fromJson(data);
+      return WeatherModel.fromMap(data);
     } catch (e) {
       throw e.toString();
     }

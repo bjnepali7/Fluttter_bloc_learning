@@ -1,13 +1,8 @@
-import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:weather_app/bloc/weather_bloc.dart';
 import 'package:weather_app/presentation/widgets/additional_info_item.dart';
-import 'package:weather_app/presentation/widgets/hourly_forecast_item.dart';
-import 'package:http/http.dart' as http;
-import 'package:weather_app/secrets.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -51,7 +46,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           if (state is WeatherError) {
             return Center(child: Text(state.error));
           }
-          if (state is! Weathersucess) {
+          if (state is! WeatherSuccess){
             return Center(
               child: CircularProgressIndicator.adaptive(),
             );
@@ -62,8 +57,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
           final currentTemp = data.temperature;
           final currentSky = data.sky;
           final currentPressure = data.pressure;
-          final currentWindSpeed =data.windSpeed;
-          final currentHumidity =data.humidity;
+          final currentWindSpeed = data.windSpeed;
+          final currentHumidity = data.humidity;
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
